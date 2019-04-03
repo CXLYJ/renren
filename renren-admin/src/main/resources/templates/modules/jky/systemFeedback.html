@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统消息</title>
+    <#include "/header.html">
+    <style>
+    	.systemback{
+            color: #494e8f;
+            font-size: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="rrapp">
+	<div>
+        <span class="systemback">系统反馈</span>
+        <hr/>
+    </div>
+	<textarea v-model="totalData" name="mback" id="mback" rows="10" cols="150"></textarea>
+    <div class="control">
+        <a class="btn btn-primary" @click="submit">提交问题</a>
+    </div>
+</div>
+<script src="${request.contextPath}/statics/js/modules/jky/systemFeedback.js?_${.now?long}"></script>
+
+</body>
+</html>

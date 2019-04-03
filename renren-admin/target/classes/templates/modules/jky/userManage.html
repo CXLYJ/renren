@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户申请</title>
+    <#include "/header.html">
+    <link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui/css/layui.css">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="q.name" @keyup.enter="query" placeholder="姓名">
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="q.username" @keyup.enter="query" placeholder="手机号">
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="q.jobNumber" @keyup.enter="query" placeholder="工号">
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2">手机号:</div>
+                <div class="col-sm-10">
+                    <span>{{ApplyInfo.username}}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">密码:</div>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" v-model="ApplyInfo.password" placeholder="密码"/>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <div class="col-sm-2">姓名:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="ApplyInfo.name" placeholder="姓名"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">公司:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="ApplyInfo.company" placeholder="公司"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">工号:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="ApplyInfo.jobNumber" placeholder="工号"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">身份证号:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="ApplyInfo.identityCard" placeholder="身份证号"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">邮箱:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="ApplyInfo.email" placeholder="邮箱"/>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="update" value="修改"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="取消"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${request.contextPath}/statics/plugins/layui/layui.js"></script>
+<script src="${request.contextPath}/statics/js/modules/jky/userManage.js?_${.now?long}"></script>
+</body>
+</html>

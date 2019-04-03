@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.jky.dao.RiskLevelDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.jky.entity.RiskLevelEntity" id="riskLevelMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="preventWay" column="prevent_way"/>
+        <result property="level" column="level"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="riskLevelVO" type="io.renren.modules.jky.vo.RiskLevelVO">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <collection property="nextRiskLevels" column="id" javaType="java.util.ArrayList"
+            ofType="io.renren.modules.jky.vo.RiskLevelVO" select="getNextRiskLevels"/>
+    </resultMap>
+    <resultMap id="nextRiskLevels" type="io.renren.modules.jky.vo.RiskLevelVO">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <collection property="nextRiskLevels" column="id" javaType="java.util.ArrayList"
+            ofType="io.renren.modules.jky.vo.RiskLevelVO" select="getNextRiskLevels"/>
+    </resultMap>
+    <select id="getRiskLevelTree" resultMap="riskLevelVO">
+        SELECT
+          id,name
+        FROM
+          risk_level
+        WHERE
+          level=1 and status=0 and parent_id=0
+    </select>
+    <select id="getNextRiskLevels" resultMap="nextRiskLevels">
+        SELECT
+          id,name
+        FROM
+          risk_level
+        WHERE
+          parent_id=#{id} and status=0 and level!=1
+    </select>
+
+
+</mapper>

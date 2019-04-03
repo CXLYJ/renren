@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>案列详情</title>
+    <#include "/header.html">
+    <link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui/css/layui.css">
+    <script src="${request.contextPath}/statics/js/modules/jky/info.js"></script>
+    <style>
+        .al_details .btn{
+            width: 100px;
+            margin-right: 10px;
+            border: none;
+            background: #9F9F9F;
+        }
+        .grid-btn .form-group{
+            padding-left: 100px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        .grid-btn {
+            padding-top: 20px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .grid-btn .form-group div{
+            /*float: left;*/
+            display: inline-block;
+            margin-right: 10px;
+            width: 90px;
+            display: inline-block;
+        }
+        .grid-btn .form-group input{
+            height: 34px;
+            width: 300px;
+            display: inline-block;
+            border-radius:4px;
+            padding-left: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+        .grid-btn .form-group select{
+            height: 34px;
+            width: 300px;
+            line-height: 34px;
+            border-radius:4px;
+            border:1px solid #ccc;
+        }
+        .control{
+            margin-top: 20px;
+        }
+        .control .btn-primary{
+            width: 130px;
+            height: 40px;
+            line-height: 2em;
+            margin-right: 10px;
+            border: none;
+            background: #3c8dbc;
+        }
+        .control .returns {
+            background: #9F9F9F;
+        }
+        .grid-btn .textBox{
+            margin-bottom: 20px;
+        }
+        .grid-btn .textBox textarea{
+            width: 100%;
+            height: 60px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            box-sizing: border-box;
+        }
+        .grid-btn .ileft p{
+            line-height: 60px;
+            text-align: center;
+        }
+        .grid-btn .ileft .mytitle {
+            color: #3c8dbc;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20px;
+        }
+        .grid-btn .ileft .titlename{
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .levelY{
+            overflow: hidden;
+            width: 100%;
+            border-bottom: 5px solid #ccc;
+            padding-bottom: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .levelY:last-child{
+            border: none;
+        }
+        .grid-btn .ileft {
+            width: 20%;
+        }
+        .grid-btn .iright {
+            width: 80%;
+        }
+        .grid-btn .iright .hr{
+            border-bottom: 1px solid #000;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .grid-btn .iright .selson{
+            vertical-align:middle;
+            overflow: hidden;
+            line-height:26px
+        }
+        .grid-btn .iright .selson span{
+            font-size: 14px;
+            font-weight: bold;
+            color: #3c8dbc;
+        }
+        .grid-btn .many {
+            margin-right: 5px;
+            zoom: 130%;
+            float: left;
+        }
+        .checki input{
+            margin-right: 5px;
+            zoom: 130%;
+            float: left;
+        }
+        .checkiBox{
+			overflow:hidden;        
+        }
+        
+        .checkiBox .checki{
+        	float: left;
+        	width:33%;
+        }
+        .stronger{
+        	font-weight:bold;
+        }
+        .line{
+        	height:5px;
+        	width:100%;
+        	background:#c4c4c4;
+        }     
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div class="al_details">
+        <a class="btn btn-primary" @click="download">下载</a>
+        <a class="btn btn-primary" @click="build">新建</a>
+        <a class="btn btn-primary" @click="deletes">删除</a>
+    </div>
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title">
+            <li class="layui-this">项目信息</li>
+            <li>参建单位信息</li>
+            <li>建筑信息</li>
+            <li>自然环境信息</li>
+            <li>机械设备信息</li>
+            <li>物料信息</li>
+            <li>事故信息</li>
+            <li>事故原因</li>
+            <li>其他信息</li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 400px;">
+            <div class="layui-tab-item layui-show">
+                <div class="grid-btn">
+                    <div class="form-group col-sm-6">
+                        <div>项目编号</div>
+                        <input v-model="totalData.project.code" type="text">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>项目识别码</div>
+                        <input v-model="totalData.project.idtftCode" type="text">
+                    </div>
+                    <div class="form-group col-sm-6" >
+                        <div>国内外</div>
+                        <select v-model="totalData.project.within" name="city">
+                            <!--<option value="">选择部门</option>-->
+                            <option value="1">国内</option>
+                            <option value="2">国外</option>
+                        </select>
+                    </div>                 
+                    <div class="form-group col-sm-6">
+                        <div>项目名称</div>
+                        <input v-model="totalData.project.name" type="text">
+                    </div>
+                     <div class="form-group col-sm-6" v-show="totalData.project.within==1">
+                        <div>省市</div>
+						   <select v-model="province" name="province" id="province" @change="changProvince" onchange="getCity()" style="width:148px">
+	                            <option value="">--选择省份--</option>
+	                             <!-- 利用js把省份添加到下拉列表里-->
+	                               <script type="text/javascript"> 
+	                                for(var i=0;i<provinceArr.length;i++){
+	                                    document.write("<option value='"+i+"'>"+provinceArr[i]+"</option>");
+
+	                                }
+	                            </script>
+	                        </select>
+	                        <select v-model="city" name="city" id="city" @change="changeCity" style="width:148px">
+	                            <option value="">--选择城市--</option>
+                                <template v-for="(item,index) in citys">
+                                    <option :value="index">{{item}}</option>
+                                </template>
+	                        </select>
+                    </div>
+                    <div class="form-group col-sm-6" v-show="totalData.project.within==2">
+                        <div>项目地点</div>
+                        <input v-model="totalData.project.site" type="text">
+                    </div>                    
+                    <div class="form-group col-sm-6">
+                        <div>项目类型</div>
+                        <select v-model="totalData.project.type" name="city">
+                            <option  v-for="(item,index) in project1.dictionaryList1" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>周边环境</div>
+                        <select v-model="totalData.project.environment" name="city">
+                            <option  v-for="(item,index) in project1.dictionaryList2" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="grid-btn">
+                    <div class="form-group col-sm-6" v-for="(item,index) in company[2001]">
+                        <div>建设单位</div>
+                        <input v-model="company[2001][index].companyName" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6" v-for="(item,index) in company[2002]">
+                        <div>总承包单位{{index+1}}</div>
+                        <input v-model="company[2002][index].companyName" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6" v-for="(item,index) in company[2003]">
+                        <div>专业分包{{index+1}}</div>
+                        <input v-model="company[2003][index].companyName" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6" v-for="(item,index) in company[2004]">
+                        <div>劳务分包{{index+1}}</div>
+                        <input v-model="company[2004][index].companyName" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6" v-for="(item,index) in company[2005]">
+                        <div>监理单位{{index+1}}</div>
+                        <input v-model="company[2005][index].companyName" type="text" placeholder="请输入">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="grid-btn">
+                    <div class="form-group col-sm-6">
+                        <div>结构类型</div>
+                        <select v-model="totalData.building.structure " name="city">
+                            <option  v-for="(item,index) in building2.dictionaryList1" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>建筑高度</div>
+                        <input v-model="totalData.building.height" type="text" onkeyup="value=value.replace(/[^\d.]/g,'')" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>建筑层数</div>
+                        <input v-model="totalData.building.floor" onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>施工形式</div>
+                        <select v-model="totalData.building.constructionMethod" name="city">
+                            <option  v-for="(item,index) in building2.dictionaryList2" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>抗震等级</div>
+                        <select v-model="totalData.building.seismicRating" name="city">
+                            <option  v-for="(item,index) in building2.dictionaryList3" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>抗震设防烈度</div>
+                        <select v-model="totalData.building.seismicIntensity" name="city">
+                            <option  v-for="(item,index) in building2.dictionaryList4" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>耐火等级</div>
+                        <select v-model="totalData.building.fireRating" name="city">
+                            <option  v-for="(item,index) in building2.dictionaryList5" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="grid-btn">
+                    <div class="form-group col-sm-6">
+                        <div>温度</div>
+                        <input v-model="totalData.naturalEnvironment.temperature" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>风力</div>
+                        <input v-model="totalData.naturalEnvironment.windForce" onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>地震</div>
+                        <input v-model="totalData.naturalEnvironment.earthquake" onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>雷击</div>
+                        <input v-model="totalData.naturalEnvironment.lightning" onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>降水</div>
+                        <select v-model="totalData.naturalEnvironment.rain" name="city">
+                            <option  v-for="(item,index) in naturalEnvironment3.dictionaryList1" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>其他</div>
+                        <input v-model="totalData.naturalEnvironment.other" type="text" placeholder="请输入">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="grid-btn">
+                    <div class="form-group col-sm-6">
+                        <div>塔吊</div>
+                        <select v-model="totalData.machine.towerCrane" name="city">
+                            <option  v-for="(item,index) in machine4.dictionaryList1" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>施工升降机</div>
+                        <select v-model="totalData.machine.constructionElevator" name="city">
+                            <option  v-for="(item,index) in machine4.dictionaryList2" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>吊车</div>
+                        <select v-model="totalData.machine.crane" name="city">
+                            <option  v-for="(item,index) in machine4.dictionaryList3" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>吊篮</div>
+                        <select v-model="totalData.machine.basket" name="city">
+                            <option  v-for="(item,index) in machine4.dictionaryList4" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>挖掘机</div>
+                        <select v-model="totalData.machine.excavator" name="city">
+                            <option  v-for="(item,index) in machine4.dictionaryList5" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>叉车</div>
+                        <select v-model="totalData.machine.forklift" name="city">
+                            <option  v-for="(item,index) in machine4.dictionaryList6" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>其他</div>
+                        <input v-model="totalData.machine.other" type="text" placeholder="请输入">
+                    </div>
+                </div>
+            </div>
+           <div class="layui-tab-item">
+	           <div class="grid-btn">
+	               <div class="form-group col-sm-6">
+	                   <div>钢筋</div>
+	                   <select v-model="totalData.material.concreteIron" name="city">
+	                       <option  v-for="(item,index) in material5.dictionaryList1" :value="item.code">{{item.value}}</option>
+	                   </select>
+	               </div>
+	               <div class="form-group col-sm-6">
+	                   <div>混凝土</div>
+	                   <select v-model="totalData.material.concrete" name="city">
+	                       <option  v-for="(item,index) in material5.dictionaryList2" :value="item.code">{{item.value}}</option>
+	                   </select>
+	               </div>
+	               <div class="form-group col-sm-6">
+	                   <div>脚手架</div>
+	                   <select v-model="totalData.material.scaffold" name="city">
+	                       <option  v-for="(item,index) in material5.dictionaryList3" :value="item.code">{{item.value}}</option>
+	                   </select>
+	               </div>
+	               <div class="form-group col-sm-6">
+	                   <div>模板</div>
+	                   <select v-model="totalData.material.template" name="city">
+	                       <option  v-for="(item,index) in material5.dictionaryList4" :value="item.code">{{item.value}}</option>
+	                   </select>
+	               </div>
+	               <div class="form-group col-sm-6">
+	                   <div>其他</div>
+	                   <input v-model="totalData.material.other" type="text" placeholder="请输入">
+	               </div>
+	           </div>
+           </div>
+           <div class="layui-tab-item">
+            	<div class="grid-btn">
+   					<div class="form-group col-sm-6">
+                        <div>事故类型</div>
+                        <select v-model="totalData.accidentVO.accidentType" name="city">
+                            <option  v-for="(item,index) in accidentVO6.dictionaryList1" :value="item.code">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>事故名称</div>
+                        <input v-model="totalData.accidentVO.accidentName" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>事故备注</div>
+                        <input v-model="totalData.accidentVO.accidentComment" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>发生时间</div>
+                        <input type="text"  class="layui-input" id="time" placeholder="发生时间">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>重伤人数</div>
+                        <input v-model="totalData.accidentVO.numberInjury" onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>死亡人数</div>
+                        <input v-model="totalData.accidentVO.numberDeath"  onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>经济损失</div>
+                        <input v-model="totalData.accidentVO.pecuniaryLoss" onkeyup="value=value.replace(/[^\d.]/g,'')" type="text" placeholder="请输入">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div>工期延误</div>
+                        <input v-model="totalData.accidentVO.projectDelay" type="text" placeholder="请输入">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="grid-btn">
+                    <div class="col-sm-2 ileft ">
+                        <p>事故原因</p>
+                    </div>
+                    <div class="col-sm-10 textBox iright">
+                        <textarea v-model="totalData.accidentReason.accidentReason" id=""></textarea>
+                    </div>
+                </div>
+                <div class="grid-btn levelY" v-for="(item,index) in reasonList.riskList">
+                    <div class="col-sm-2 ileft">
+                        <span class="mytitle">0{{item.id}}</span>
+                        <span class="titlename">一级风险因素</span>
+                        <div style="height: 28px;"></div>
+                        <span class="titlename" style="margin-left:77px;">二级风险因素</span>
+                        <div style="height: 48px;"></div>
+                        <span class="titlename" style="margin-left:77px;">三级风险因素</span>
+                    </div>
+                    <div class="col-sm-10 iright">
+                        <div class="selson">
+                            <input class="many" type="checkbox" v-model="oneClass" :value="item.id" style="vertical-align:middle;" @change="selectItem(item.id)"/><span>{{item.name}}</span>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="checkiBox" v-for="(its,i) in item.nextRiskLevels">
+                            <div class="stronger">
+                                <input class="many" type="checkbox" v-model="oneClass" :value="its.id" style="vertical-align:middle;" @change="selectItem(item.id, its.id)" /><span>{{its.name}}</span>
+                            </div>
+                            <br/>
+                            <div class="checki" v-for="(iem,s) in its.nextRiskLevels">
+                                <input type="checkbox" v-model="oneClass" :value="iem.id" @change="selectItem(item.id, its.id, iem.id)" /><span>{{iem.name}}</span>
+                            </div>
+                            <br/>
+                            <div class="hr"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+            	<div class="grid-btn">
+                     <div class="form-group col-sm-12">
+                        <div>事故出处</div>
+                        <input v-model="totalData.accidentVO.provenance" type="text" placeholder="请输入">
+                    </div>
+                     <div class="form-group col-sm-12">
+                        <div>事故链接</div>
+                        <input v-model="totalData.accidentVO.url" type="text" placeholder="请输入">
+                    </div>
+                     <div class="form-group col-sm-12">
+                        <div>事故附件</div>
+                        <div v-if="!totalData.accidentVO.accessory">
+                            <input type='file' class='filebutton' @change="addafter" style='display:none'/>
+                            <button type="button" class="layui-btn" @click="addfile" >上传文件</button>
+					        <!--<a class="btn btn-primary" @click="download">点击下载</a>						  -->
+					    </div>
+                         <div v-if="totalData.accidentVO.accessory">
+                             <button type="button" class="layui-btn" @click="download" >下载附件</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="control">
+        <a class="btn btn-primary" @click="storage">保存</a>
+        <a class="btn btn-primary returns" @click="returns">返回</a>
+    </div>
+</div>
+<script src="${request.contextPath}/statics/plugins/layui/layui.js"></script>
+<script src="${request.contextPath}/statics/js/modules/jky/al_details.js?_${.now?long}"></script>
+<script>
+    layui.use('element', function(){
+        var element = layui.element();
+
+        //…
+    });
+</script>
+<script>
+    layui.use('laydate', function() {
+        document.getElementById('time').onclick = function(){
+            layui.laydate({elem: this,festival: true})
+        }
+    });
+
+    function maxDate(){
+        var now = new Date();
+        return now.getFullYear()+"-" + (now.getMonth()+1) + "-" + now.getDate();
+    }
+    // getCity()
+    function getCity(){
+        //1.获取省份选择框的对象
+        var provincesobj=document.getElementById("province");
+        //2.获取市县选择框的对象
+        var cityobj=document.getElementById("city");
+        //3.获取被选择的省份的索引
+        var index=provincesobj.selectedIndex;
+        // alert(provincesobj[index].value+","+provincesobj[index].text);
+        //4.通过省份的索引获取它的value值，value值也是它在数组的索引值
+        var value=provincesobj[index].value;
+        //5.获取对应省份的市县数组
+        var cityName=cityArr[value];
+        //6.将下拉框清楚索引为0之后的，只保留第一个
+        cityobj.length=1;
+        //通过循环遍历市县元素给下拉框赋值
+        for(var i=1;i<cityArr[value].length;i++){
+            cityobj.options[cityobj.options.length]=new Option(cityName[i],i);
+        }
+    }
+</script>
+
+</body>
+</html>

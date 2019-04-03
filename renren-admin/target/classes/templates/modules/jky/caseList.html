@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统日志</title>
+    <#include "/header.html">
+    <style>
+        .grid-btn{
+            overflow: hidden;
+        }
+        .grid-btn .my-son{
+            float: left;
+            margin-right: 20px;
+        }
+
+        .grid-btn .my-right{
+            float: right;
+        }
+
+        .grid-btn .time-son input{
+            padding-left: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            height: 34px;
+            border-radius:4px;
+            border:1px solid #ccc;
+            box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+            transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+
+        .grid-btn .my-son select{
+            width: 100px;
+            height: 34px;
+            line-height: 34px;
+            border-radius:4px;
+            border:1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div class="grid-btn">
+        <div class="form-group my-son">
+            <div style="float: left;line-height: 2.5em;">项目名称：</div>
+            <input type="text" style="width: 130px;" class="form-control" v-model="q.roleName" @keyup.enter="query" placeholder="请输入项目名称">
+        </div>
+        <div class="form-group my-son time-son">
+            <div style="float: left;line-height: 2.5em;">时间：</div>
+                <input type="text" autocomplete="off" class="layui-input" id="LAY_demorange_s" placeholder="开始时间">
+        </div>
+        <div class="form-group my-son time-son">
+            <input type="text" autocomplete="off" class="layui-input" id="LAY_demorange_e" placeholder="结束时间">
+        </div>
+        <div class="form-group my-son">
+            <div style="float: left;line-height: 2.5em;">地点：</div>
+            <input type="text" style="width: 130px;" class="form-control" v-model="q.place"  placeholder="请输入项目地点">
+        </div>
+        <div class="form-group my-son">
+            <span>事故类型：</span>
+            <select v-model="q.accidentType" name="city">
+                <option value="">请选择</option>
+                <option  v-for="(item,index) in type" :value="item.code">{{item.value}}</option>
+            </select>
+        </div>
+        <div class="my-right">
+            <a class="btn btn-primary" @click="build"><i class="fa fa-plus"></i>案列添加</a>
+        </div>
+        <div class="my-right">
+            <a class="btn btn-default" @click="query">查询</a>
+        </div>
+            <!--<div class="form-group col-sm-2">-->
+            <!--<select name="city">-->
+                <!--<option value="">选择部门</option>-->
+                <!--<option value="0">北京</option>-->
+            <!--</select>-->
+        <!--</div>-->
+
+    </div>
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" @click="lock">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+<script src="${request.contextPath}/statics/js/modules/jky/caseList.js?_${.now?long}"></script>
+<script src="${request.contextPath}/statics/plugins/layui/layui.js"></script>
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        var start = {
+            min: '1900-01-01'
+            ,max: maxDate()
+            ,istoday: false
+            ,choose: function(datas){
+                // console.log(datas)
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas //将结束日的初始值设定为开始日
+            }
+        };
+        var end = {
+            min: laydate.now()
+            ,max: maxDate()
+            ,istoday: false
+            ,choose: function(datas){
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            }
+        };
+
+        document.getElementById('LAY_demorange_s').onclick = function(){
+            start.elem = this;
+            laydate(start);
+        }
+        document.getElementById('LAY_demorange_e').onclick = function(){
+            end.elem = this
+            laydate(end);
+        }
+        // var table = layui.table;
+        // console.log(table)
+    });
+
+    function maxDate(){
+        var now = new Date();
+        return now.getFullYear()+"-" + (now.getMonth()+1) + "-" + now.getDate();
+    }
+</script>
+</body>
+</html>

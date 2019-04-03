@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+<meta charset="UTF-8" >
+<link rel="stylesheet" href="/static/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/static/css/bootstrap-theme.min.css"></link>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+<script src="/static/js/bootstrap.js"></script>
+<link href="http://vjs.zencdn.net/5.20.1/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/5.20.1/videojs-ie8.min.js"></script>
+<style type="text/css">
+body{min-width:1160px;background: #e5e5e5;}
+#part1{
+	width: 345px;
+	height: 300px;
+	background: #f5f5f5;
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+#part2{
+	width: 460px;
+	height: 300px;
+	background: #f5f5f5;
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+#part3{
+	width: 345px;
+	height: 300px;
+	background: #f5f5f5;
+	float: left;
+	margin-bottom: 5px;
+}
+#part4{
+	width: 345px;
+	height: 230px;
+	background: #f5f5f5;
+	float: left;
+	margin-right: 5px;
+}
+#part5{
+	width: 460px;
+	height: 230px;
+	background: #f5f5f5;
+	float: left;
+	margin-right: 5px;
+}
+#part6{
+	width: 345px;
+	height: 230px;
+	background: #f5f5f5;
+	float: left;
+}
+/* #tou {
+    height: 10px;
+    font-size:10px;
+} */
+#msg {
+    height: 220px;
+    overflow-y: auto;
+    font-size:13px;
+}
+#message {
+	width: 300px;
+	height: 40px;
+}
+/* #logout {
+    display: none;
+} */
+#part{
+	margin-right: 2px;
+}
+#br {
+    height: 12px;
+}
+#knowledge {
+	width: 300px;
+	height: 40px;
+}
+</style>
+<title>人机协同</title>
+</head>
+<body>
+
+<div id="part1">
+<div id="part" align="center" style="background:#ffffff; color:#000000" >
+<span style="font-size:16px;font-weight:bold;"> 
+SN:
+<span id="robotSnValue"></span>
+<span id="robotAreaValue"></span>
+</span> 
+</div>
+	<div style="width:340px;height:275px;" onmousedown="get_mouse_down()" >
+		<video id="video" preload="auto"
+			data-setup="{}"
+			style="width:340px;height:275px;object-fit:fill" >
+    		<source id ="videoSource" src="" type="rtmp/mp4" >
+    		<!-- <source src="${request.contextPath}/statics/video/shanghai.mp4" type="video/mp4" > -->
+		</video>
+	</div>
+</div>
+
+<div id="part2">
+<div id="part" align="center" style="background:#ffffff; color:#000000" >
+<span style="font-size:16px;font-weight:bold;"> 
+问答监控
+</span>
+</div>
+    <div class="container">
+        <!-- <p class="text-right" id="logout"></p> -->
+        <!-- <div id="tou"></div> -->
+        <div class="well" id="msg"></div>
+        <div class="col-lg">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="发送信息..." id="message" /> <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" id="tts_start" disabled="disabled" style="background-color: #53a83f;width: 50px;height: 35px;color: #FFFFFF">发送</button>	
+                    <button class="btn btn-default" type="button" id="clean" style="background-color: #ffffff;width: 50px;height: 35px;color: #000000">清空</button>
+                </span> 
+            </div>
+            <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
+    </div>
+    <!-- /.row -->
+</div>
+
+<div id="part3">
+<div align="center" style="background:#ffffff; color:#000000" >
+<span style="font-size:16px;font-weight:bold;"> 
+控制动作
+</span>
+</div>
+   <div class="input-group">
+       <span class="input-group-btn">
+           <button type="button" id="tts_stop" disabled="disabled" style="background-color: #4285f4;width: 110px;height: 35px;color: #FFFFFF">关闭文本转语音</button>
+           <button type="button" id="asr_start" disabled="disabled" style="background-color: #4285f4;width: 110px;height: 35px;color: #FFFFFF">开启语音转文本</button>
+           <button type="button" id="asr_stop" disabled="disabled" style="background-color: #4285f4;width: 110px;height: 35px;color: #FFFFFF">关闭语音转文本</button>
+       </span> 
+   </div>
+   <div class="input-group">
+       <span class="input-group-btn">
+           <button type="button" id="head_rise" disabled="disabled" style="background-color: #2b55b1;width: 110px;height: 35px;color: #FFFFFF">抬头</button>
+           <button type="button" id="head_center" disabled="disabled" style="background-color: #2b55b1;width: 110px;height: 35px;color: #FFFFFF">回正</button>
+           <button type="button" id="head_bow" disabled="disabled" style="background-color: #2b55b1;width: 110px;height: 35px;color: #FFFFFF">低头</button>
+       </span>
+   </div>
+   <div class="input-group">
+       <span class="input-group-btn">
+           <button type="button" id="share_screen" disabled="disabled" style="background-color: #4285f4;width: 110px;height: 35px;color: #FFFFFF">开启同屏</button>
+           <button type="button" id="share_screen_stop" disabled="disabled" style="background-color: #4285f4;width: 110px;height: 35px;color: #FFFFFF">关闭同屏</button>
+           <button type="button" id="sn_start" disabled="disabled" style="background-color: #4285f4;width: 110px;height: 35px;color: #FFFFFF">获取SN号</button>
+       </span>
+   </div>
+   <div class="input-group">
+       <span class="input-group-btn">
+           <button type="button" id="camera_start" disabled="disabled" style="background-color: #2b55b1;width: 110px;height: 35px;color: #FFFFFF">开启摄像头</button>
+           <button type="button" id="camera_stop" disabled="disabled" style="background-color: #2b55b1;width: 110px;height: 35px;color: #FFFFFF">关闭摄像头</button>
+       </span>
+   </div>
+</div>
+
+<div id="part4">
+<div id="part" align="center" style="background:#ffffff; color:#000000" >
+<span style="font-size:16px;font-weight:bold;"> 
+常用命令
+</span>
+</div>
+   <div class="input-group" align="center" > 
+       <form>
+		<table>
+			<tr>
+			<td>
+			</td>
+			<td>
+				<button type="button" id="move_robot_up" style="background-color: #53a83f;width: 50px;height: 50px;color: #FFFFFF">前进</button>
+			</td>
+			<td>
+			</td>
+			</tr>
+			<tr>
+			<td>
+				<button type="button" id="move_robot_left" style="background-color: #53a83f;width: 50px;height: 50px;color: #FFFFFF">向左</button>
+			</td>
+			<td>
+			</td>
+			<td>
+				<button type="button" id="move_robot_right" style="background-color: #53a83f;width: 50px;height: 50px;color: #FFFFFF">向右</button>
+			</td>
+			</tr>
+			<tr>
+			<td>
+			</td>
+			<td>
+			    <button type="button" id="move_robot_down" style="background-color: #53a83f;width: 50px;height: 50px;color: #FFFFFF">后退</button>
+			</td>
+			<td>
+			</td>
+			</tr>
+		</table>
+	</form>
+   </div>
+</div>
+
+<div id="part5">
+<div id="part" align="center" style="background:#ffffff; color:#000000" >
+<span style="font-size:16px;font-weight:bold;"> 
+知识检索和问答
+</span>
+</div>
+   <div class="input-group">
+        <div id="br"></div>
+        <input type="text" class="form-control" placeholder="请输入内容..." id="knowledge"></input> <span class="input-group-btn">
+            <button class="btn btn-default" type="button" id="queryKnowledge" style="background-color: #325bf1;width: 50px;height: 35px;color: #ffffff">查询</button>
+        </span>
+   		<br>
+	   <span>您好,欢迎光临太平洋保险</span><br>
+	   <span>您好,请问有什么可以为您效劳的呢</span><br>
+	   <span>不好意思,请您重复一遍</span><br>
+	   <span>正在处理,请稍候</span><br>
+	   <span>处理已完成，请查收</span><br>
+	   <span>谢谢，欢迎下次光临</span><br> 
+   </div>
+     <!-- <audio id="audio" controls="controls" autoplay="autoplay" >
+   		<source id="audioSource" src="data:audio/x-mpeg;base64,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//MoxMQAAANIAAAAACRqmhLEXPh3RAccQgAATBbX3HecSNCuTBVLX0FJppkimXTiX7/N0v/++///2a2gpE0Lh4+aOn/+zPYv//MoxMQAAANIAUAAAKr9NJyYMEmOJIN////2TT9bLsgtZRIYuh/2QL0P3/NHXz2cYLGglDJWAWNTBIB+d5uzN//b///////X//MoxP8esyG9QZSYAP/+SXb3P/9DG/4+E///pv8Z8n8egciJ1qG5hnk+QNpLmRoJUGALz5cZNYAqDtKh6f+hW//////////q//MoxL8YIyJgAY+IADR+7/84JyaK+otIKNVEeBskqtwFsYU8ylGIK+dNUcvBWlFHOk4ScYM350vu3/////9f5u//7f/qQ9Zg//MoxJkMck6sy4s4AGCaKv/H4ZkvqFkaesIpbnCQX8GX1AZylxECAZSPggfIWg++GMhlNb6w26sMYEyrKdQdOVAxphDVUt8D//MoxKIM4cbEAY9oAAD/7iGWGK56XB8jfJgCjMUFuOEVx9AoJZ6RK+oWYmJrWxgdNW9/1F4+ij1DoeM9BYRAEcWhxVOQWRTn//MoxKkNIg7YAc1oACKHTO9jKKsexitQhKqd7t/1sZVWzGKKrDwaG/+GxYbH1RbZJbQBbHQB7CTgkxboHRHDy5HEt1T7Gf////MoxK8M8ObgylNKcP////94hDBPRp61vF1h4gef2FLVJrqVPr8APHA8XACRZMx8AyLKQFguJG0U7r////////9XYdQl1f1X//MoxLYYCjLWLntKmnT0a6o9NamRGuSPgfOE+5+l6x+DOkuYBVT2VBIV84/+r//t///9T/fgilKyBW8xspitRSskgEbW6wRy//MoxJAMEVcWXmiKlsyOWWJM8rNkVdNMdYPxFyLkHE2B75vQHwCNGDIIFn1eGbcI2oLuZej9P/fydA3oNwQD1CYo3p/lqw11//MoxJoNIf7dlFHEmZ2tyVxcHUYrvddXT6K5ZK/UfppuTU94IOoJyBnypmTpS98tv/T/+k8chDZyp5ojzT9O/Ql3qYOZ2b9v//MoxKAMkg7AAGtEmP//////I3aXqR9XZnerCA0wbQjjBI5Fb93cXPaUii40ScXMB854bFz1cIA2bEf//s3VoNr/////89Cf//MoxKgM8XqsAVEQALpsxXYykYM5AQk7OgkKMGVSMylYMDdw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//MoxCsMgZLSWBiElhPUrlKXqFdQFYZYVL4vaFxChyVQy0RlL0JnAicD8DUFhWWyamfckFRUMwqLB5/9DwZCgkf//xRMQU1F//MoxDQMAFnsAMYYJDMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy45OS41VVVVVVVVVVVV//MoxD8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy45OS41VVVVVVVVVVVV//MoxHoAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy45OS41VVVVVVVVVVVV//MoxLUAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy45OS41VVVVVVVVVVVV//MoxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MoxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MoxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MoxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg">
+	</audio> -->
+</div>
+
+<div id="part6">
+<div align="center" style="background:#ffffff; color:#000000" >
+<span style="font-size:16px;font-weight:bold;"> 
+常用语列表
+</span>
+</div>
+   <div class="input-group">
+	   <img src="${request.contextPath}/statics/images/number.png"><span>您好,欢迎光临太平洋保险</span><br>
+	   <img src="${request.contextPath}/statics/images/number.png"><span>您好,请问有什么可以为您效劳的呢</span><br>
+	   <img src="${request.contextPath}/statics/images/number.png"><span>不好意思,请您重复一遍</span><br>
+	   <img src="${request.contextPath}/statics/images/number.png"><span>正在处理,请稍候</span><br>
+	   <img src="${request.contextPath}/statics/images/number.png"><span>处理已完成，请查收</span><br>
+	   <img src="${request.contextPath}/statics/images/number.png"><span>谢谢，欢迎下次光临</span><br>
+   </div>
+</div>
+
+<script src="http://vjs.zencdn.net/5.20.1/video.js"></script>
+<script type="text/javascript">
+//$(function() {
+	/* function toggleSound() {
+            var music = document.getElementById("audio");//获取ID  
+            if (music.paused) { //判读是否播放
+                music.paused=false;
+                music.play(); //没有就播放 
+            }  
+        }
+	toggleSound(); */
+	function getUrlParms(name) {
+	    let tstr = window.location.href;
+	    let index = tstr.indexOf('?')
+	    let str = tstr.substring(index + 1);
+	    let arr = str.split('&');
+	    let result = {};
+	    arr.forEach((item) => {
+	        let a = item.split('=');
+	        result[a[0]] = a[1];
+	    })
+	    return result[name];
+	}
+	var robotSn = getUrlParms("robotSn");
+	var username = getUrlParms("username");
+	
+	//document.getElementById("videoSource").src = "http://127.0.0.1:"+robotSn+"/statics/video/"+username+".mp4";
+	document.getElementById("videoSource").src = "rtmp://app.moliinfo.com:1935/stream/"+robotSn+"_"+username;
+	var player = videojs('video');
+	player.volume(0.8);
+	console.log(player);
+	player.play();
+	
+	var robotId = getUrlParms("robotId");
+	var robotArea = decodeURI(getUrlParms("robotArea"));
+	$("#robotSnValue").text(robotSn);
+	$("#robotAreaValue").text(robotArea);
+	if (username != undefined && username != '') {
+		run=function(){
+			connection(username);
+		}
+	}
+	run();
+    var websocket;
+    /* $("#connection-btn").bind("click", function() {
+        var userName = $("#userName").val();
+        if (userName == null || userName == "") {
+            alert("请输入您的用户名");
+            return;
+        }
+        connection(userName);
+    }); */
+
+    function connection(userName) {
+        var host = window.location.host;
+      //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+            websocket = new WebSocket("ws://" + host +
+                "/webSocketServer/" + userName);
+        } else if ('MozWebSocket' in window) {
+            websocket = new MozWebSocket("ws://" + host +
+                "/webSocketServer/" + userName);
+        }
+        websocket.onopen = function(evnt) {
+            //$("#tou").html("链接服务器成功!")
+            $("#tts_start").prop("disabled", "");
+            $("#tts_stop").prop("disabled", "");
+            $("#asr_start").prop("disabled", "");
+            $("#asr_stop").prop("disabled", "");
+            $("#sn_start").prop("disabled", "");
+            $("#audio_start").prop("disabled", "");
+            $("#audio_stop").prop("disabled", "");
+            $("#get_audio").prop("disabled", "");
+            $("#head_rise").prop("disabled", "");
+            $("#head_center").prop("disabled", "");
+            $("#head_bow").prop("disabled", "");
+            $("#share_screen").prop("disabled", "");
+            $("#share_screen_stop").prop("disabled", "");
+            $("#camera_start").prop("disabled", "");
+            $("#camera_stop").prop("disabled", "");
+            //$("#connection-btn").prop("disabled", "disabled");
+            //$("#logout").show();
+        };
+        websocket.onmessage = function(evnt) {
+            var json = (new Function("return " + evnt.data))(); 
+        	var myDate = new Date();
+            if(json.msg_id == "SPEECH_SERVICE_TEXT_TO_VOICE_START"){
+                if(json.hasOwnProperty("fromUserName") && json.hasOwnProperty("toUserName")){
+                	if((json.fromUserName == userName) && (json.toUserName == robotSn)){
+                        $("#msg").html($("#msg").html() + "<br/>" + myDate.toLocaleString()+" "+userName+":"+json.txt);
+                	}
+                }
+            }else if(json.msg_id == "VOICE_TO_TEXT_START"){
+            	if(json.hasOwnProperty("fromUserName") && json.hasOwnProperty("toUserName")){
+                	if((json.fromUserName == robotSn) && (json.toUserName == userName)){
+                        if(json.hasOwnProperty("result")){
+                            $("#msg").html($("#msg").html() + "<br/>" + myDate.toLocaleString()+" "+robotSn+":"+json.result);
+                        }
+                	}
+                }
+            }else if(json.msg_id == "AUDIO_SERVICE_START"){
+            	if(json.hasOwnProperty("fromUserName") && json.hasOwnProperty("toUserName")){
+                	if((json.fromUserName == robotSn) && (json.toUserName == userName)){
+                        if(json.hasOwnProperty("data")){
+                            var audioSource = document.getElementById('audioSource');
+                            audioSource.src = json.data;
+                            audioSource.type = "audio/x-wav";
+                            var audio = document.getElementById('audio');
+                            audio.load();
+                        }
+                	}
+            	}
+            }else if(json.msg_id == "SHARE_SCREEN_START"){
+            	if(json.hasOwnProperty("fromUserName") && json.hasOwnProperty("toUserName")){
+                	if((json.fromUserName == robotSn) && (json.toUserName == userName)){
+                		var shareScreenPlayer = videojs('video');
+                		shareScreenPlayer.volume(0.8);
+                		console.log(shareScreenPlayer);
+                		shareScreenPlayer.play();
+                	}
+            	}
+            }else if(json.msg_id == "CAMERA_SERVICE_START"){
+            	if(json.hasOwnProperty("fromUserName") && json.hasOwnProperty("toUserName")){
+                	if((json.fromUserName == robotSn) && (json.toUserName == userName)){
+                		var cameraPlayer = videojs('video');
+                		cameraPlayer.volume(0.8);
+                		console.log(cameraPlayer);
+                		cameraPlayer.play();
+                	}
+            	}
+            }
+        };
+        websocket.onerror = function(evnt) {
+            alert('报错');
+            //$("#tou").html("报错!")
+        };
+        websocket.onclose = function(evnt) {
+            alert('与服务器已断开,请重连');
+            //$("#tou").html("与服务器断开了链接!");
+            $("#tts_start").prop("disabled", "disabled");
+            $("#tts_stop").prop("disabled", "disabled");
+            $("#asr_start").prop("disabled", "disabled");
+            $("#asr_stop").prop("disabled", "disabled");
+            $("#sn_start").prop("disabled", "disabled");
+            $("#audio_start").prop("disabled", "disabled");
+            $("#audio_stop").prop("disabled", "disabled");
+            $("#get_audio").prop("disabled", "disabled");
+            $("#head_rise").prop("disabled", "disabled");
+            $("#head_center").prop("disabled", "disabled");
+            $("#head_bow").prop("disabled", "disabled");
+            $("#share_screen").prop("disabled", "disabled");
+            $("#share_screen_stop").prop("disabled", "disabled");
+            $("#camera_start").prop("disabled", "disabled");
+            $("#camera_stop").prop("disabled", "disabled");
+            //$("#connection-btn").prop("disabled", "");
+            //$("#logout").hide();
+        }
+    }
+
+    function clean() {
+        var $message = $("#message");
+        $message.val("");
+    }
+
+    $('#clean').bind('click', function() {
+    	clean();
+    });
+
+    function tts_start() {
+        if (websocket != null) {
+            var $message = $("#message");
+            if($message.val().trim() == ""){
+                alert('不能发送空白信息');
+            }else{
+                var data = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"SPEECH_SERVICE_TEXT_TO_VOICE_START","txt":"'+$message.val()+'"}';
+                if (data == null || data == "") {
+                    return;
+                }
+                websocket.send(data);
+                $message.val("");
+            }
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#tts_start').bind('click', function() {
+    	tts_start();
+    });
+
+    $(document).on("keypress", function(event) {
+        if (event.keyCode == "13") {
+        	tts_start();
+        }
+    });
+
+    function tts_stop() {
+        if (websocket != null) {
+            var tts_stop_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"SPEECH_SERVICE_TEXT_TO_VOICE_STOP"}';
+            websocket.send(tts_stop_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#tts_stop').bind('click', function() {
+    	tts_stop();
+    });
+
+    function asr_start() {
+        if (websocket != null) {
+            var asr_start_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"SPEECH_SERVICE_VOICE_TO_TEXT_START"}';
+            websocket.send(asr_start_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#asr_start').bind('click', function() {
+    	asr_start();
+    });
+    
+    function asr_stop() {
+        if (websocket != null) {
+            var asr_stop_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"SPEECH_SERVICE_VOICE_TO_TEXT_STOP"}';
+            websocket.send(asr_stop_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#asr_stop').bind('click', function() {
+    	asr_stop();
+    });
+    
+    function sn_start() {
+        if (websocket != null) {
+            var sn_start_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_SN"}';
+            websocket.send(sn_start_message);
+            alert("sn="+robotSn);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#sn_start').bind('click', function() {
+    	sn_start();
+    });
+
+    function audio_start() {
+        if (websocket != null) {
+            var audio_start_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"AUDIO_SERVICE_START_GET_DATA"}';
+            websocket.send(audio_start_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#audio_start').bind('click', function() {
+    	audio_start();
+    });
+    
+    function audio_stop() {
+        if (websocket != null) {
+            var audio_stop_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"AUDIO_SERVICE_STOP_GET_DATA"}';
+            websocket.send(audio_stop_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#audio_stop').bind('click', function() {
+    	audio_stop();
+    });
+
+    function get_audio() {
+        if (websocket != null) {
+            var get_audio_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"AUDIO_SERVICE_GET_DATA"}';
+            websocket.send(get_audio_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#get_audio').bind('click', function() {
+    	get_audio();
+    });
+
+    function head_rise() {
+        if (websocket != null) {
+            var head_rise_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_ACTION","action":"5"}';
+            websocket.send(head_rise_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#head_rise').bind('click', function() {
+    	head_rise();
+    });
+    
+    function head_center() {
+        if (websocket != null) {
+            var head_center_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_ACTION","action":"9"}';
+            websocket.send(head_center_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#head_center').bind('click', function() {
+    	head_center();
+    });
+
+    function head_bow() {
+        if (websocket != null) {
+            var head_bow_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_ACTION","action":"6"}';
+            websocket.send(head_bow_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#head_bow').bind('click', function() {
+    	head_bow();
+    });
+
+    function share_screen() {
+        if (websocket != null) {
+            var share_screen_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_SHARE_SCREEN"}';
+            websocket.send(share_screen_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#share_screen').bind('click', function() {
+    	share_screen();
+    });
+
+    function share_screen_stop() {
+        if (websocket != null) {
+            var share_screen_stop_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_SHARE_SCREEN_STOP"}';
+            websocket.send(share_screen_stop_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#share_screen_stop').bind('click', function() {
+    	share_screen_stop();
+    });
+    
+    function camera_start() {
+        if (websocket != null) {
+            var camera_start_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"CAMERA_SERVICE_START_GET_DATA"}';
+            websocket.send(camera_start_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#camera_start').bind('click', function() {
+    	camera_start();
+    });
+    
+    function camera_stop() {
+        if (websocket != null) {
+            var camera_stop_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"CAMERA_SERVICE_STOP_GET_DATA"}';
+            websocket.send(camera_stop_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+
+    $('#camera_stop').bind('click', function() {
+    	camera_stop();
+    });
+
+    function get_mouse_down() {
+        var e = event || window.event;
+        var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        var x = e.pageX || e.clientX + scrollX;
+        var y = e.pageY || e.clientY + scrollY;
+    	if (websocket != null) {
+            var control_message = '{"fromUserName":"'+username+'","toUserName":"'+robotSn+'","msg_id":"MECHINE_SERVICE_CONTROL","event":"DOWN'+x+'#'+y+'"}';
+            websocket.send(control_message);
+        } else {
+            alert('未与服务器链接.');
+        }
+    }
+    
+    function move_robot_left() {
+    	alert("向左");
+    }
+
+    $('#move_robot_left').bind('click', function() {
+    	move_robot_left();
+    });
+    
+    function move_robot_right() {
+    	alert("向右");
+    }
+
+    $('#move_robot_right').bind('click', function() {
+    	move_robot_right();
+    });
+    
+    function move_robot_up() {
+    	alert("前进");
+    }
+
+    $('#move_robot_up').bind('click', function() {
+    	move_robot_up();
+    });
+    
+    function move_robot_down() {
+    	alert("后退");
+    }
+
+    $('#move_robot_down').bind('click', function() {
+    	move_robot_down();
+    });
+
+//});
+</script>
+</body>
+</html>

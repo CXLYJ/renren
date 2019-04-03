@@ -1,0 +1,1948 @@
+swagger: '2.0'
+info:
+  description: 建科院平台项目后台接口文档
+  version: 1.0.0
+  title: 建科院平台项目
+
+basePath: /
+
+schemes:
+- http
+
+#定义接口数据
+paths:
+  /jky/questions/list:
+    get:
+      tags:
+      - 问题
+      summary: 所有问题信息
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      responses:
+        '200':
+          description: 返回信息
+          schema:
+            $ref: '#/definitions/QuestionVO'
+  /jky/news/list:
+    get:
+      tags:
+      - 行业报告
+      summary: 所有报告信息
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      responses:
+        '200':
+          description: 返回信息
+          schema:
+            $ref: '#/definitions/NewsVO'
+  /jky/aboutus/list:
+    get:
+      tags:
+      - 关于我们
+      summary: 所有信息
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      responses:
+        '200':
+          description: 返回信息
+          schema:
+            $ref: '#/definitions/AboutUsVO'
+  /jky/aboutus/info/{id}:
+    get:
+      tags:
+      - 关于我们
+      summary: 关于我们详情
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 关于我们ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回信息
+          schema:
+            $ref: '#/definitions/AboutUsVO'
+  /jky/project/list:
+    get:
+      tags:
+      - 项目管理
+      summary: 项目列表
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      - name: startTime
+        description: 查询起始时间
+        in: query
+        type: string
+      - name: endTime
+        description: 查询起始时间
+        in: query
+        type: string
+      - name: name
+        description: 项目名称
+        in: query
+        type: string
+      - name: province
+        description: 项目地点（省名）
+        in: query
+        type: string
+      - name: type
+        description: 项目类型
+        in: query
+        type: string
+      responses:
+        '200':
+          description: 返回项目列表
+          schema:
+            $ref: '#/definitions/ProjectVO'
+  /jky/case/list:
+    get:
+      tags:
+      - 案例项目管理
+      summary: 案例项目列表
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      - name: projectName
+        description: 项目名称
+        in: query
+        type: string
+      - name: startTime
+        description: 查询起始时间
+        in: query
+        type: string
+      - name: endTime
+        description: 查询起始时间
+        in: query
+        type: string
+      - name: projectSite
+        description: 事故发生地点（省名）
+        in: query
+        type: string
+      - name: accidentType
+        description: 事故类型
+        in: query
+        type: string
+      responses:
+        '200':
+          description: 返回案例项目列表
+          schema:
+            $ref: '#/definitions/CaseListVO'
+  /jky/risk/subList:
+    get:
+      tags:
+      - 事故风险清单
+      summary: 风险清单子列表
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+        default: 1
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+        default: 10
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      - name: parentId
+        description: 父风险因素id,第一级的父级id都为0
+        in: query
+        type: integer
+        format: int64
+        required: true
+      responses:
+        '200':
+          description: 返回子风险因素列表
+          schema:
+            $ref: '#/definitions/RiskLevel_update'
+  /jky/feedback/list:
+    get:
+      tags:
+      - 系统反馈信息管理
+      summary: 反馈信息列表
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      responses:
+        '200':
+          description: 返回反馈信息列表
+          schema:
+            $ref: '#/definitions/FeedbackVO'
+  /jky/questions/info/{id}:
+    get:
+      tags:
+      - 问题
+      summary: 问题信息
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 问题ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回问题详情
+          schema:
+            $ref: '#/definitions/QuestionVO'
+  /jky/questions/save:
+    post:
+      tags:
+      - 问题
+      summary: 保存
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 问题对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/QuestionVO_save'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/questions/update:
+    post:
+      tags:
+      - 问题
+      summary: 更新
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 问题对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/QuestionVO'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/questions/delete:
+    post:
+      tags:
+      - 问题
+      summary: 删除
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: id集合
+        in: body
+        type: array
+        items:
+          type: integer
+          format: int64
+          default: 0
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/news/info/{id}:
+    get:
+      tags:
+      - 行业报告
+      summary: 报告信息
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 行业报告ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回报告详情
+          schema:
+            $ref: '#/definitions/NewsVO'
+  /jky/project/info/{id}:
+    get:
+      tags:
+      - 项目管理
+      summary: 项目详情
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 项目ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回项目详情
+          schema:
+            $ref: '#/definitions/ProjectVO'
+  /jky/case/info/{id}:
+    get:
+      tags:
+      - 案例项目管理
+      summary: 案例项目详情
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 案例ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回案例项目详情
+          schema:
+            $ref: '#/definitions/CaseVO'
+  /jky/risk/info/{riskId}:
+    get:
+      tags:
+      - 事故风险清单
+      summary: 风险因素详情
+      produces:
+      - application/json
+      parameters:
+      - name: riskId
+        description: 风险因素ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回风险因素详情
+          schema:
+            $ref: '#/definitions/RiskLevel_update'
+
+  /jky/aboutus/save:
+    post:
+      tags:
+      - 关于我们
+      summary: 保存
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 关于我们对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/AboutUsVO_save'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/aboutus/update:
+    post:
+      tags:
+      - 关于我们
+      summary: 更新
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 关于我们对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/AboutUsVO'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/aboutus/delete:
+    post:
+      tags:
+      - 关于我们
+      summary: 删除
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: id集合
+        in: body
+        type: array
+        items:
+          type: integer
+          format: int64
+          default: 0
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/case/save:
+    post:
+      tags:
+      - 案例项目管理
+      summary: 保存案例
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 案例对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/CaseVO_save'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/feedback/save:
+    post:
+      tags:
+      - 系统反馈信息管理
+      summary: 保存反馈信息
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 反馈信息对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/FeedbackVO_save'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/risk/save:
+    post:
+      tags:
+      - 事故风险清单
+      summary: 保存风险因素
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 风险因素对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/RiskLevel_save'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/case/update:
+    post:
+      tags:
+      - 案例项目管理
+      summary: 更新案例
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 案例对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/CaseVO'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/risk/update:
+    post:
+      tags:
+      - 事故风险清单
+      summary: 更新风险因素
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 风险因素对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/RiskLevel_update'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/case/delete:
+    post:
+      tags:
+      - 案例项目管理
+      summary: 删除案例
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 案例id集合
+        in: body
+        type: array
+        items:
+          type: integer
+          format: int64
+          default: 0
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/risk/delete:
+    post:
+      tags:
+      - 事故风险清单
+      summary: 删除风险因素
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 风险因素id集合
+        in: body
+        type: array
+        items:
+          type: integer
+          format: int64
+          default: 0
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/risk/allList:
+    get:
+      tags:
+      - 事故风险清单
+      summary: 全部风险清单
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: 返回风险因素列表
+          schema:
+            $ref: '#/definitions/RiskLevelVO'
+  /jky/risk/tree:
+    get:
+      tags:
+      - 事故风险清单
+      summary: 全部风险清单树,与allList接口作用一样，效率略高
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: 返回风险因素列表
+          schema:
+            $ref: '#/definitions/RiskLevelVO'
+  /jky/map/city:
+    get:
+      tags:
+      - 案例分布图
+      summary: 省市分布
+      produces:
+      - application/json
+
+      responses:
+        '200':
+          description: 返回省市分布数据集
+          schema:
+            $ref: '#/definitions/cityData'
+  /jky/map/time/{year}:
+    get:
+      tags:
+      - 案例分布图
+      summary: 发生时间分布
+      produces:
+      - application/json
+      parameters:
+      - name: year
+        description: 年份区间
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          description: 返回发生时间分布数据集
+          schema:
+            $ref: '#/definitions/timeData'
+  /jky/map/type:
+    get:
+      tags:
+      - 案例分布图
+      summary: 案例类型分布
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: 返回案例类型分布数据集
+          schema:
+            $ref: '#/definitions/typeData'
+  /jky/map/die:
+    get:
+      tags:
+      - 案例分布图
+      summary: 死亡人数分布
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: 返回死亡人数分布数据集
+          schema:
+            $ref: '#/definitions/dieData'
+  /jky/map/risk:
+    get:
+      tags:
+      - 案例分布图
+      summary: 事故风险因素权重分布
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: 返回事故风险因素权重分布数据集
+          schema:
+            $ref: '#/definitions/riskData'
+  /sys/dict/listByType:
+    get:
+      tags:
+      - 字典数据管理
+      summary: 指定类型的字典数据列表
+      produces:
+      - application/json
+      parameters:
+      - name: type
+        description: 字典类型
+        in: query
+        type: string
+        required: true
+      responses:
+        '200':
+          description: 返回字典数据列表
+          schema:
+            $ref: '#/definitions/DictionaryVO'
+  /sys/dict/infoByCode/{code}:
+    get:
+      tags:
+      - 字典数据管理
+      summary: 字典详情
+      produces:
+      - application/json
+      parameters:
+      - name: code
+        description: 字典码
+        in: path
+        type: string
+        required: true
+      responses:
+        '200':
+          description: 返回字典详情
+          schema:
+            $ref: '#/definitions/DictionaryVO'
+  /captcha.jpg:
+    get:
+      tags:
+      - 登录
+      summary: 获取验证码
+      produces:
+      - application/octet-stream
+  /sys/login:
+    post:
+      tags:
+      - 登录
+      summary: 用户登录
+      produces:
+      - application/json
+      parameters:
+      - name: username
+        description: 用户名
+        in: query
+        type: string
+        required: true
+      - name: password
+        description: 密码
+        in: query
+        type: string
+        required: true
+      - name: captcha
+        description: 验证码
+        in: query
+        type: string
+        required: true
+      responses:
+        '200':
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              token:
+                description: token
+                type: string
+              expire:
+                description: 过期时长
+                type: integer
+                format: int32
+              msg:
+                description: 失败原因
+                type: string
+  /sys/register:
+    post:
+      tags:
+      - 登录
+      summary: 用户注册
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 用户VO对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/SysUserVO'
+        required: true
+      responses:
+        '200':
+          schema:
+            type: object
+            properties:
+              userId:
+                description: 注册成功的用户id
+                type: integer
+                format: int64
+  /sys/user/addUserInfo:
+    post:
+      tags:
+      - 登录
+      summary: 信息填写
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 用户信息对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/UserInfo'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/user/applyList:
+    get:
+      tags:
+      - 系统管理模块
+      summary: 用户申请列表
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      - name: name
+        description: 姓名
+        in: query
+        type: string
+      - name: username
+        description: 手机号
+        in: query
+        type: string
+      - name: identity_card
+        description: 身份证号
+        in: query
+        type: string
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SysUserListVO'
+  /sys/user/manageList:
+    get:
+      tags:
+      - 系统管理模块
+      summary: 用户管理列表
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        description: 页码
+        in: query
+        type: integer
+        required: true
+      - name: limit
+        description: 每页条数
+        in: query
+        type: integer
+        required: true
+      - name: sidx
+        description: 排序字段
+        in: query
+        type: string
+      - name: order
+        description: 排序方式，如：asc、desc
+        in: query
+        type: string
+      - name: name
+        description: 姓名
+        in: query
+        type: string
+      - name: username
+        description: 手机号
+        in: query
+        type: string
+      - name: jobNumber
+        description: 工号
+        in: query
+        type: string
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SysUserListVO'
+  /sys/user/applyInfo/{userId}:
+    get:
+      tags:
+      - 系统管理模块
+      summary: 用户申请详情
+      produces:
+      - application/json
+      parameters:
+      - name: userId
+        description: 用户ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ApplyInfo'
+  /sys/user/applyPass/{userId}:
+    get:
+      tags:
+      - 系统管理模块
+      summary: 审核通过
+      produces:
+      - application/json
+      parameters:
+      - name: userId
+        description: 用户ID
+        in: path
+        type: integer
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/user/updateInfo:
+    post:
+      tags:
+      - 系统管理模块
+      summary: 用户信息修改
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        description: 用户对象
+        in: body
+        type: string
+        schema:
+          $ref: '#/definitions/UserInfo_Update'
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /jky/case/upload:
+    post:
+      tags:
+      - 案例项目管理
+      summary: 上传/更新案例附件
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: accessory
+        description: 案例附件
+        in: formData
+        type: file
+        required: true
+      - name: accidentId
+        description: 案例id
+        in: formData
+        type: integer
+        format: int64
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#definitions/R'
+  /jky/case/download:
+    get:
+      tags:
+      - 案例项目管理
+      summary: 下载案例附件
+      produces:
+      - application/octet-stream
+      parameters:
+      - name: accidentId
+        description: 案例id
+        in: query
+        type: integer
+        format: int64
+        required: true
+      responses:
+        200:
+          description: 案例附件
+          schema:
+            type: blob
+
+#定义数据模型
+definitions:
+  R:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      msg:
+        description: 失败原因
+        type: string
+  QuestionVO:
+    type: object
+    properties:
+      id:
+        description: 问题id
+        type: integer
+        format: int64
+      question:
+        description: 问题
+        type: string
+      answer:
+        description: 解答
+        type: string
+      status:
+        description: 状态码 0：存在  非0：不存在
+        type: integer
+        format: int32
+  QuestionVO_save:
+    type: object
+    properties:
+      question:
+        description: 问题
+        type: string
+      answer:
+        description: 解答
+        type: string
+  NewsVO:
+    type: object
+    properties:
+      id:
+        description: 行业报告id
+        type: integer
+        format: int64
+      title:
+        description: 标题
+        type: string
+      date:
+        description: 日期
+        type: string
+      src:
+        description: 图片路径
+        type: string
+      describe:
+        description: 描述
+        type: string
+      content:
+        description: 内容
+        type: string
+  AboutUsVO:
+    type: object
+    properties:
+      id:
+        description: 关于我们id
+        type: integer
+        format: int64
+      date:
+        description: 日期
+        type: string
+      content:
+        description: 内容
+        type: string
+      sort:
+        description: 排序
+        type: integer
+        format: int32
+  CaseListVO:
+    type: object
+    properties:
+      accidentId:
+        description: 事故id
+        type: integer
+        format: int64
+      projectName:
+        description: 项目名称
+        type: string
+      accidentTime:
+        description: 事故发生时间
+        type: string
+      projectSite:
+        description: 项目地点
+        type: string
+      accidentType:
+        description: 事故类型
+        type: string
+      numberInjury:
+        description: 重伤人数
+        type: integer
+        format: int32
+      numberDeath:
+        description: 死亡人数
+        type: integer
+        format: int32
+      pecuniaryLoss:
+        description: 经济损失
+        type: number
+        format: double
+  DictionaryVO:
+    type: object
+    properties:
+      name:
+        description: 字典名称
+        type: string
+      type:
+        description: 字典类型
+        type: string
+      code:
+        description: 字典码
+        type: string
+      value:
+        description: 字典码描述值
+        type: string
+      orderNum:
+        description: 排序字段
+        type: integer
+        format: int32
+  ProjectVO:
+    type: object
+    properties:
+      id:
+        description: 项目id
+        type: integer
+        format: int64
+      code:
+        description: 项目编号
+        type: string
+      idtftCode:
+        description: 项目识别码
+        type: string
+      name:
+        description: 项目名称
+        type: string
+      within:
+        description: 国内/外,1-国内,2-国外
+        type: integer
+        format: int32
+      province:
+        description: 国内省份
+        type: string
+      city:
+        description: 国内城市
+        type: string
+      site:
+        description: 国外项目地点
+        type: string
+      type:
+        description: 项目类型
+        type: integer
+        format: int32
+      environment:
+        description: 周边环境
+        type: integer
+        format: int32
+  ProjectVO_save:
+    type: object
+    properties:
+      code:
+        description: 项目编号
+        type: string
+      idtftCode:
+        description: 项目识别码
+        type: string
+      name:
+        description: 项目名称
+        type: string
+      within:
+        description: 国内/外,1-国内,2-国外
+        type: integer
+        format: int32
+      province:
+        description: 国内省份
+        type: string
+      city:
+        description: 国内城市
+        type: string
+      site:
+        description: 国外项目地点
+        type: string
+      type:
+        description: 项目类型
+        type: integer
+        format: int32
+      environment:
+        description: 周边环境
+        type: integer
+        format: int32
+  CompanyVO:
+    type: object
+    properties:
+      id:
+        description: 参建公司id
+        type: integer
+        format: int64
+      companyName:
+        description: 参建公司名称
+        type: string
+      companyType:
+        description: 参建类型
+        type: integer
+        format: int32
+  CompanyVO_save:
+    type: object
+    properties:
+      companyName:
+        description: 参建公司名称
+        type: string
+      companyType:
+        description: 参建类型
+        type: integer
+        format: int32
+  BuildingVO:
+    type: object
+    properties:
+      id:
+        description: 建筑id
+        type: integer
+        format: int64
+      structure:
+        description: 结构类型
+        type: integer
+        format: int32
+      height:
+        description: 建筑高度
+        type: integer
+        format: int32
+      floor:
+        description: 建筑层数
+        type: integer
+        format: int32
+      constructionMethod:
+        description: 施工方式
+        type: integer
+        format: int32
+      seismicRating:
+        description: 抗震等级
+        type: integer
+        format: int32
+      seismicIntensity:
+        description: 抗震设防烈度
+        type: integer
+        format: int32
+      fireRating:
+        description: 抗震等级
+        type: integer
+        format: int32
+  BuildingVO_save:
+    type: object
+    properties:
+      structure:
+        description: 结构类型
+        type: integer
+        format: int32
+      height:
+        description: 建筑高度
+        type: integer
+        format: int32
+      floor:
+        description: 建筑层数
+        type: integer
+        format: int32
+      constructionMethod:
+        description: 施工方式
+        type: integer
+        format: int32
+      seismicRating:
+        description: 抗震等级
+        type: integer
+        format: int32
+      seismicIntensity:
+        description: 抗震设防烈度
+        type: integer
+        format: int32
+      fireRating:
+        description: 抗震等级
+        type: integer
+        format: int32
+  NaturalEnvironmentVO:
+    type: object
+    properties:
+      id:
+        description: 自然环境id
+        type: integer
+        format: int64
+      temperature:
+        description: 温度
+        type: number
+        format: double
+      windForce:
+        description: 风力
+        type: number
+        format: double
+      earthquake:
+        description: 地震
+        type: number
+        format: double
+      lightning:
+        description: 雷击
+        type: number
+        format: double
+      rain:
+        description: 降水
+        type: integer
+        format: int32
+      other:
+        description: 其他
+        type: string
+  NaturalEnvironmentVO_save:
+    type: object
+    properties:
+      temperature:
+        description: 温度
+        type: number
+        format: double
+      windForce:
+        description: 风力
+        type: number
+        format: double
+      earthquake:
+        description: 地震
+        type: number
+        format: double
+      lightning:
+        description: 雷击
+        type: number
+        format: double
+      rain:
+        description: 降水
+        type: integer
+        format: int32
+      other:
+        description: 其他
+        type: string
+  MachineVO:
+    type: object
+    properties:
+      id:
+        description: 机械设备id
+        type: integer
+        format: int64
+      towerCrane:
+        description: 塔吊
+        type: integer
+        format: int32
+      constructionElevator:
+        description: 施工升降机
+        type: integer
+        format: int32
+      crane:
+        description: 吊车
+        type: integer
+        format: int32
+      basket:
+        description: 吊篮
+        type: integer
+        format: int32
+      excavator:
+        description: 挖掘机
+        type: integer
+        format: int32
+      forklift:
+        description: 叉车
+        type: integer
+        format: int32
+      other:
+        description: 其他
+        type: string
+  AboutUsVO_save:
+    type: object
+    properties:
+      date:
+        description: 日期
+        type: string
+      content:
+        description: 内容
+        type: string
+      sort:
+        description: 排序
+        type: integer
+        format: int32
+  MachineVO_save:
+    type: object
+    properties:
+      towerCrane:
+        description: 塔吊
+        type: integer
+        format: int32
+      constructionElevator:
+        description: 施工升降机
+        type: integer
+        format: int32
+      crane:
+        description: 吊车
+        type: integer
+        format: int32
+      basket:
+        description: 吊篮(暂无，值传0)
+        type: integer
+        format: int32
+      excavator:
+        description: 挖掘机
+        type: integer
+        format: int32
+      forklift:
+        description: 叉车
+        type: integer
+        format: int32
+      other:
+        description: 其他
+        type: string
+  MaterialVO:
+    type: object
+    properties:
+      id:
+        description: 物料信息id
+        type: integer
+        format: int64
+      concreteIron:
+        description: 钢筋
+        type: integer
+        format: int32
+      concrete:
+        description: 混凝土
+        type: integer
+        format: int32
+      scaffold:
+        description: 脚手架
+        type: integer
+        format: int32
+      template:
+        description: 模板
+        type: integer
+        format: int32
+      other:
+        description: 其他
+        type: string
+  MaterialVO_save:
+    type: object
+    properties:
+      concreteIron:
+        description: 钢筋
+        type: integer
+        format: int32
+      concrete:
+        description: 混凝土
+        type: integer
+        format: int32
+      scaffold:
+        description: 脚手架
+        type: integer
+        format: int32
+      template:
+        description: 模板
+        type: integer
+        format: int32
+      other:
+        description: 其他
+        type: string
+  AccidentVO:
+    type: object
+    properties:
+      id:
+        description: 事故信息id
+        type: integer
+        format: int64
+      accidentType:
+        description: 事故类型
+        type: integer
+        format: int32
+      accidentName:
+        description: 事故名称
+        type: string
+      accidentComment:
+        description: 事故备注
+        type: string
+      time:
+        description: 发生时间
+        type: string
+        format: date-time
+      numberInjury:
+        description: 重伤人数
+        type: integer
+        format: int32
+      numberDeath:
+        description: 死亡人数
+        type: integer
+        format: int32
+      pecuniaryLoss:
+        description: 经济损失
+        type: number
+        format: double
+      projectDelay:
+        description: 工期延误
+        type: string
+      provenance:
+        description: 事故出处
+        type: string
+      url:
+        description: 事故链接
+        type: string
+      accessory:
+        description: 附件文件名
+        type: string
+  AccidentVO_save:
+    type: object
+    properties:
+      accidentType:
+        description: 事故类型
+        type: integer
+        format: int32
+      accidentName:
+        description: 事故名称
+        type: string
+      accidentComment:
+        description: 事故备注
+        type: string
+      time:
+        description: 发生时间(yyyy-MM-dd)
+        type: string
+        format: date-time
+      numberInjury:
+        description: 重伤人数
+        type: integer
+        format: int32
+      numberDeath:
+        description: 死亡人数
+        type: integer
+        format: int32
+      pecuniaryLoss:
+        description: 经济损失
+        type: number
+        format: double
+      projectDelay:
+        description: 工期延误
+        type: string
+      provenance:
+        description: 事故出处
+        type: string
+      url:
+        description: 事故链接
+        type: string
+  RiskLevelVO:
+    type: object
+    properties:
+      id:
+        description: 风险因素id
+        type: integer
+        format: int64
+      name:
+        description: 风险因素名称
+        type: string
+      nextRiskLevels:
+        description: 下一级风险因素集合
+        type: array
+        xml:
+          name: riskLevelVO
+          wrapped: true
+        items:
+          $ref: "#/definitions/RiskLevelVO"
+  RiskLevelVO_save:
+    type: object
+    properties:
+      id:
+        description: 风险因素id
+        type: integer
+        format: int64
+      nextRiskLevels:
+        description: 下一级风险因素集合
+        type: array
+        xml:
+          name: riskLevelVO
+          wrapped: true
+        items:
+          $ref: "#/definitions/RiskLevelVO_save"
+  AccidentReasonVO:
+    type: object
+    properties:
+      id:
+        description: 事故原因id
+        type: integer
+        format: int64
+      accidentReason:
+        description: 事故原因
+        type: string
+      riskLevels:
+        description: 一级风险因素集合
+        type: array
+        xml:
+          name: riskLevelVO
+          wrapped: true
+        items:
+          $ref: "#/definitions/RiskLevelVO"
+  AccidentReasonVO_save:
+    type: object
+    properties:
+      accidentReason:
+        description: 事故原因
+        type: string
+      riskLevels:
+        description: 一级风险因素集合
+        type: array
+        xml:
+          name: riskLevelVO
+          wrapped: true
+        items:
+          $ref: "#/definitions/RiskLevelVO_save"
+  CaseVO:
+    type: object
+    properties:
+      project:
+        description: 项目信息
+        $ref: "#/definitions/ProjectVO"
+      building:
+        description: 建筑信息
+        $ref: "#/definitions/BuildingVO"
+      naturalEnvironment:
+        description: 自然环境
+        $ref: "#/definitions/NaturalEnvironmentVO"
+      machine:
+        description: 机械设备
+        $ref: "#/definitions/MachineVO"
+      material:
+        description: 物料信息
+        $ref: "#/definitions/MaterialVO"
+      accidentVO:
+        description: 事故信息
+        $ref: "#/definitions/AccidentVO"
+      accidentReason:
+        description: 事故原因
+        $ref: "#/definitions/AccidentReasonVO"
+      companys:
+        description: 参建单位列表
+        type: array
+        xml:
+          name: company
+          wrapped: true
+        items:
+          $ref: "#/definitions/CompanyVO"
+  CaseVO_save:
+    type: object
+    properties:
+      project:
+        description: 项目信息
+        $ref: "#/definitions/ProjectVO_save"
+      building:
+        description: 建筑信息
+        $ref: "#/definitions/BuildingVO_save"
+      naturalEnvironment:
+        description: 自然环境
+        $ref: "#/definitions/NaturalEnvironmentVO_save"
+      machine:
+        description: 机械设备
+        $ref: "#/definitions/MachineVO_save"
+      material:
+        description: 物料信息
+        $ref: "#/definitions/MaterialVO_save"
+      accidentVO:
+        description: 事故信息
+        $ref: "#/definitions/AccidentVO_save"
+      accidentReason:
+        description: 事故原因
+        $ref: "#/definitions/AccidentReasonVO_save"
+      companys:
+        description: 参建单位列表
+        type: array
+        xml:
+          name: company
+          wrapped: true
+        items:
+          $ref: "#/definitions/CompanyVO_save"
+  cityData:
+    type: object
+    properties:
+      name:
+        description: 省名称
+        type: string
+      value:
+        description: 发生事故数量
+        type: integer
+        format: int32
+  timeData:
+    type: object
+    properties:
+      time:
+        description: 事故发生的年份
+        type: string
+      num:
+        description: 发生事故数量
+        type: integer
+        format: int32
+  typeData:
+    type: object
+    properties:
+      name:
+        description: 发生事故的类型
+        type: string
+      value:
+        description: 发生事故数量
+        type: integer
+        format: int32
+  dieData:
+    type: object
+    properties:
+      die:
+        description: 单次事故死亡人数
+        type: integer
+        format: int64
+      num:
+        description: 发生事故数量
+        type: integer
+        format: int32
+  riskData:
+    type: object
+    properties:
+      name:
+        description: 事故风险因素名称
+        type: string
+      num:
+        description: 发生事故数量
+        type: integer
+        format: int32
+  FeedbackVO:
+    type: object
+    properties:
+      content:
+        description: 反馈内容
+        type: string
+      publishTime:
+        description: 反馈时间(yyyy-MM-dd HH:mm)
+        type: string
+        format: date-time
+      username:
+        description: 反馈用户
+        type: string
+  FeedbackVO_save:
+    type: object
+    properties:
+      content:
+        description: 反馈内容
+        type: string
+      username:
+        description: 反馈用户
+        type: string
+  SysUserVO:
+    type: object
+    properties:
+      username:
+        description: 用户名
+        type: string
+      password:
+        description: 密码
+        type: string
+      captcha:
+        description: 验证码
+        type: string
+  UserInfo:
+    type: object
+    properties:
+      userId:
+        description: 用户id
+        type: integer
+        format: int64
+      name:
+        description: 姓名
+        type: string
+      company:
+        description: 公司名称
+        type: string
+      jobNumber:
+        description: 工号
+        type: string
+      identityCard:
+        description: 身份证
+        type: string
+      email:
+        description: 邮箱
+        type: string
+  SysUserListVO:
+    type: object
+    properties:
+      userId:
+        description: 用户id
+        type: integer
+        format: int64
+      name:
+        description: 姓名
+        type: string
+      username:
+        description: 手机号
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      audit:
+        description: 审核状态，0-待审核，1-审核通过
+        type: integer
+        format: int32
+      roleIdList:
+        description: 角色ID列表
+        type: array
+        items:
+          type: integer
+          format: int32
+  ApplyInfo:
+    type: object
+    properties:
+      userId:
+        description: 用户id
+        type: integer
+        format: int64
+      name:
+        description: 姓名
+        type: string
+      company:
+        description: 公司名称
+        type: string
+      jobNumber:
+        description: 工号
+        type: string
+      identityCard:
+        description: 身份证
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      audit:
+        description: 审核状态，0-待审核，1-审核通过
+        type: integer
+        format: int32
+  UserInfo_Update:
+    type: object
+    properties:
+      userId:
+        description: 用户ID
+        type: integer
+        format: int64
+      username:
+        description: 用户名
+        type: string
+      password:
+        description: 密码
+        type: string
+      name:
+        description: 姓名
+        type: string
+      company:
+        description: 公司
+        type: string
+      jobNumber:
+        description: 工号
+        type: string
+      identityCard:
+        description: 身份证
+        type: string
+      email:
+        description: 邮箱
+        type: string
+  RiskLevel_save:
+    type: object
+    properties:
+      name:
+        description: 风险因素名称
+        type: string
+      level:
+        description: 等级
+        type: integer
+        format: int32
+      preventWay:
+        description: 预控措施
+        type: string
+      parentId:
+        description: 父风险因素id
+        type: integer
+        format: int64
+  RiskLevel_update:
+    type: object
+    properties:
+      id:
+        description: 主键id
+        type: integer
+        format: int64
+      name:
+        description: 风险因素名称
+        type: string
+      level:
+        description: 等级
+        type: integer
+        format: int32
+      preventWay:
+        description: 预控措施
+        type: string
+      parentId:
+        description: 父风险因素id
+        type: integer
+        format: int64

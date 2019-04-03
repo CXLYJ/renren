@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>案列详情</title>
+    <#include "/header.html">
+    <link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui/css/layui.css">
+    <script src="${request.contextPath}/statics/js/modules/jky/echarts.min.js"></script>
+   	<script src="${request.contextPath}/statics/js/modules/jky/china.js"></script>
+    <style>
+        .col-sm-2 p{
+            text-align: center;
+            margin: 30px 0;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .col-sm-2 div {
+            text-align: center;
+        }
+
+        .col-sm-2 .layui-btn{
+            width: 100px;
+            margin: 15px 0;
+
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title">
+		    <li data-index="0" class="layui-this">省市分布</li>
+		    <li data-index="1">发生时间分布</li>
+		    <li data-index="2">事故类型分布</li>
+		    <li data-index="3">事故风险因素权重</li>
+	    </ul>
+        <div class="layui-tab-content" style="min-height: 600px;">
+            <div class="layui-tab-item layui-show">
+                 <div id="main" style="height: 580px;"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="form-group col-sm-2">
+                    <p>案列分布图</p>
+                    <div><button data-index="1" class="layui-btn layui-btn-primary">一年</button></div>
+                    <div><button data-index="3" class="layui-btn layui-btn-primary">三年</button></div>
+                    <div><button data-index="5" class="layui-btn layui-btn-primary">五年</button></div>
+                    <div><button data-index="10" class="layui-btn layui-btn-primary">十年</button></div>
+                </div>
+                <div class="form-group col-sm-10">
+                    <div id="histogram" style="height:480px;width: 680px;"></div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="form-group col-sm-6" style="width: 50%;background:white;padding-right:10px;border:4px solid #ccc">
+                    <p style="font-size: 14px;color: #666;margin-top: 10px;">案例类型分布图</p>
+                    <div id="typeCase" style="width: 500px;height:540px;"></div>
+                </div>
+                <div class="form-group col-sm-6" style="width: 50%;background:white;padding-left:10px;border:4px solid #ccc">
+                    <p style="font-size: 14px;color: #666;margin-top: 10px;">死亡人数分布图</p>
+                    <div id="death" style="width: 500px;height:540px;"></div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                    <p style="font-size: 14px;color: #666;margin-top: 10px;">事故风险因素权重</p>
+                    <div id="weight" style="height: 580px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${request.contextPath}/statics/plugins/layui/layui.js"></script>
+<script src="${request.contextPath}/statics/js/modules/jky/caseDistribution.js?_${.now?long}"></script>
+</body>
+</html>

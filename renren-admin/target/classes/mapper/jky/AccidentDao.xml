@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.jky.dao.AccidentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.jky.entity.AccidentEntity" id="accidentMap">
+        <result property="id" column="id"/>
+        <result property="accidentType" column="accident_type"/>
+        <result property="accidentName" column="accident_name"/>
+        <result property="accidentComment" column="accident_comment"/>
+        <result property="time" column="time"/>
+        <result property="timeDay" column="time_day"/>
+        <result property="timeHour" column="time_hour"/>
+        <result property="timeMinute" column="time_minute"/>
+        <result property="numberInjury" column="number_injury"/>
+        <result property="numberDeath" column="number_death"/>
+        <result property="pecuniaryLoss" column="pecuniary_loss"/>
+        <result property="projectDelay" column="project_delay"/>
+        <result property="provenance" column="provenance"/>
+        <result property="url" column="url"/>
+        <result property="machineId" column="machine_id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="accidentReasonId" column="accident_reason_id"/>
+        <result property="naturalEnvironmentId" column="natural_environment_id"/>
+        <result property="buildingId" column="building_id"/>
+        <result property="projectId" column="project_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="projectName" column="project_name"/>
+        <result property="projectSite" column="project_site"/>
+    </resultMap>
+    <select id="cityData" resultType="java.util.Map">
+        SELECT
+          p.province name,count(*) value
+        FROM
+         accident a
+        LEFT JOIN
+         project p
+        ON a.project_id=p.id
+        WHERE p.status=0 and a.status=0 and p.within=1
+        GROUP BY p.province
+    </select>
+    <select id="timeData" resultType="java.util.Map">
+        SELECT DATE_FORMAT(time,'%Y')AS time, COUNT(id) AS num
+        FROM accident  
+        WHERE status=0
+        GROUP BY DATE_FORMAT(time, '%Y')
+        ORDER BY time ASC
+    </select>
+    <select id="typeData" resultType="java.util.Map">
+        SELECT
+            accident_type name,count(id) value
+        FROM
+            accident
+        WHERE status=0
+        GROUP BY accident_type
+    </select>
+    <select id="dieData" resultType="java.util.Map">
+        SELECT
+            number_death die,count(id) num
+        FROM
+            accident
+        WHERE status=0
+        GROUP BY number_death
+    </select>
+    <select id="riskData" resultType="java.util.Map">
+        SELECT
+            rl.name,
+            a.num
+        FROM
+            risk_level rl,
+            ( SELECT risk_level_id rl_id, count( risk_level_id ) num FROM accident_risk GROUP BY risk_level_id ) a
+        WHERE
+            a.rl_id = rl.id
+            AND rl.status = 0
+    </select>
+
+
+</mapper>
